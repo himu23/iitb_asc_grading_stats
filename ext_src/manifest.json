@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "ASC Grade Explorer",
+  "version": "2.0.0",
+  "description": "Advanced tool for analyzing course grading distributions.",
+  "action": {
+    "default_popup": "ui/dashboard.html",
+    "default_icon": "assets/logo.png"
+  },
+  "background": {
+    "service_worker": "core/service.js"
+  },
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://asc.iitb.ac.in/*"
+  ]
+}

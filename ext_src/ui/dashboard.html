@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grade Explorer</title>
+    <style>
+        :root {
+            --bg-c: #f4f4f4;
+            --txt-c: #333;
+            --p-c: #0056b3;
+            --s-c: #28a745;
+            --e-c: #dc3545;
+        }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-c); width: 600px; display: flex; flex-direction: column; }
+        .app-container { padding: 15px; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); min-height: 200px; }
+        
+        h2 { margin: 0 0 15px 0; font-size: 18px; color: var(--txt-c); border-bottom: 2px solid var(--p-c); padding-bottom: 5px; }
+        
+        .input-zone fieldset { border: 1px solid #ddd; border-radius: 5px; padding: 10px; margin: 0; }
+        .input-zone legend { font-size: 12px; color: #666; font-weight: bold; }
+        
+        #q_area { width: 100%; box-sizing: border-box; border: 1px solid #ccc; padding: 8px; font-family: monospace; min-height: 60px; resize: vertical; }
+        
+        .ctl-group { margin-top: 10px; display: flex; gap: 10px; }
+        
+        button { flex: 1; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: opacity 0.2s; }
+        button:hover { opacity: 0.9; }
+        #go_btn { background: var(--p-c); color: white; }
+        #go_btn:disabled { background: #ccc; cursor: default; }
+        
+        .action-tools { display: none; margin-top: 10px; }
+        .btn-copy { background: var(--s-c); color: white; }
+        .btn-wipe { background: var(--e-c); color: white; }
+        
+        #status_bar { margin-top: 10px; padding: 8px; border-radius: 4px; display: none; font-size: 13px; }
+        
+        .data-viewer { margin-top: 15px; max-height: 450px; overflow-y: auto; border: 1px solid #eee; }
+        #data_grid { width: 100%; border-collapse: collapse; font-size: 12px; }
+        #data_grid th, #data_grid td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; }
+        #data_grid th { background: #f8f9fa; position: sticky; top: 0; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h2>ASC Explorer</h2>
+        
+        <div class="input-zone">
+            <fieldset>
+                <legend>Target Courses</legend>
+                <textarea id="q_area" placeholder="e.g. {CS101}"></textarea>
+                <div class="ctl-group">
+                    <button id="go_btn">Execute Fetch</button>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="status_bar"></div>
+
+        <div class="action-tools" id="post_actions">
+            <div class="ctl-group">
+                <button class="btn-copy" id="do_copy">Copy Table</button>
+                <button class="btn-wipe" id="do_clear">Reset</button>
+            </div>
+        </div>
+
+        <div class="data-viewer">
+            <table id="data_grid">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../lib/formatter.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
