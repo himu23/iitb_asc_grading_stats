@@ -24,8 +24,9 @@ function exec_extraction(t_id, codes) {
         args: [codes]
     }).then(res => {
         const val = res[0].result;
-        if (typeof val === 'string' && val.indexOf('Error:') === 0) {
-            throw new Error(val);
+        // Check for error object returned by script
+        if (val && val.error) {
+            throw new Error(val.error);
         }
         return val;
     });
@@ -62,8 +63,8 @@ async function payload_script(targets) {
             lnk.click();
             await poll_el(f_main, 'input[name="txtcrsecode"]');
 
-            // Random delay to mimic human speed variation
-            await sleep(50 + Math.random() * 100);
+            // CRITICAL: 2-second delay required for server
+            await sleep(2000);
 
             const doc = f_main.document;
             doc.querySelector('select[name="year"]').value = y;
@@ -71,14 +72,18 @@ async function payload_script(targets) {
             doc.querySelector('input[name="txtcrsecode"]').value = cc;
 
             const btn = doc.querySelector('input[name="submit"]');
-            btn.closest('form').submit();
+            // Fix: 'submit' input shadows the function, so we must call prototype directly
+            HTMLFormElement.prototype.submit.call(btn.closest('form'));
 
             try {
                 await poll_el(f_main, '#grades');
-                const t = f_main.document.getElementById('grades');
+
+                // Re-fetch document to ensure it's fresh
+                const fresh_doc = f_main.document;
+                const t = fresh_doc.getElementById('grades');
 
                 // Check 'NOT offered'
-                const red = f_main.document.querySelector('font[color="red"]');
+                const red = fresh_doc.querySelector('font[color="red"]');
                 if (red && red.innerText.includes("NOT offered")) return null;
 
                 if (t && t.querySelectorAll('td[valign="top"]').length > 0) {
